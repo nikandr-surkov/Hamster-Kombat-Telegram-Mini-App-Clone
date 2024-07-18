@@ -1,0 +1,10 @@
+version: '3'
+services:
+  frontend:
+    build: .
+    ports:
+      - "443:443"
+    environment:
+      - REACT_APP_BACKEND_URL=https://api.birdtapapp.store
+    volumes:
+      - .:/app

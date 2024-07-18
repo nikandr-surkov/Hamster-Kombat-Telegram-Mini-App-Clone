@@ -1,0 +1,49 @@
+.friends-container {
+    background-color: #1d2025;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    color: white;
+  }
+  
+  .referral-box, .friends-list-box {
+    background-color: #272a2f;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .referral-title, .friends-list-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .referral-link {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+  
+  .copy-button {
+    background-color: #f3ba2f;
+    color: #1d2025;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .copy-button:hover {
+    background-color: #d4a12d;
+  }
+  
+  .friends-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .friend-item {
+    font-size: 14px;
+    padding: 5px 0;
+    border-bottom: 1px solid #43433b;
+  }
+  
