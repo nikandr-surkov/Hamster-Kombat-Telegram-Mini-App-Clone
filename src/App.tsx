@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
-import { binanceLogo, daily, dailygoal, 5wow, dollarCoin, hamsterCoin, mainCharacter } from './images';
+import { binanceLogo, dailyCipher, dailyCombo, dailyReward, dollarCoin, hamsterCoin, mainCharacter } from './images';
 import Info from './icons/Info';
 import Settings from './icons/Settings';
 import Mine from './icons/Mine';
@@ -36,7 +36,7 @@ const App: React.FC = () => {
   ];
 
   const [levelIndex, setLevelIndex] = useState(6);
-  const [points, setPoints] = useState(009);
+  const [points, setPoints] = useState(22749365);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
   const pointsToAdd = 11;
   const profitPerHour = 126420;
@@ -82,8 +82,7 @@ const App: React.FC = () => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY
-    (${x / 10}deg)`;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
     setTimeout(() => {
       card.style.transform = '';
     }, 100);
@@ -180,20 +179,20 @@ const App: React.FC = () => {
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
                 <img src={dailyReward} alt="Daily Reward" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">Daily </p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyTimeLeft}</p>
+                <p className="text-[10px] text-center text-white mt-1">Daily reward</p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyRewardTimeLeft}</p>
               </div>
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
                 <img src={dailyCipher} alt="Daily Cipher" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">Daily goal</p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyGoalTimeLeft}</p>
+                <p className="text-[10px] text-center text-white mt-1">Daily cipher</p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyCipherTimeLeft}</p>
               </div>
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
                 <img src={dailyCombo} alt="Daily Combo" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">5 WoW</p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{daily5WoWTimeLeft}</p>
+                <p className="text-[10px] text-center text-white mt-1">Daily combo</p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyComboTimeLeft}</p>
               </div>
             </div>
 
@@ -217,6 +216,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
+
       {/* Bottom fixed div */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
         <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
@@ -240,6 +240,7 @@ const App: React.FC = () => {
           <p className="mt-1">Airdrop</p>
         </div>
       </div>
+
       {clicks.map((click) => (
         <div
           key={click.id}
