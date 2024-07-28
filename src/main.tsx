@@ -15,3 +15,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </Router>
   </React.StrictMode>,
 );
+);
