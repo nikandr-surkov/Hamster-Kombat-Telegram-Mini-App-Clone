@@ -141,7 +141,7 @@
       const phrase = words.join(' '); // Join words with a space
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/keywords/', { phrase });
+        const response = await axios.post('http://127.0.0.1:8000/api/sentence/', { phrase });
         console.log('Response:', response.data);
         alert('Words submitted successfully!');
       } catch (error) {

@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env REACT_APP_PRODUCTION=false vite",
-    "build": "cross-env REACT_APP_PRODUCTION=true tsc -b && vite build",
+  "build": "cross-env REACT_APP_PRODUCTION=true vite build",
+  "serve": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
+    
   },
   "dependencies": {
     "@telegram-apps/sdk": "^1.1.3",
@@ -25,6 +27,7 @@
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",

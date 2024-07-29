@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useContext, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
@@ -25,14 +24,13 @@ const formatProfitPerHour = (profit: number) => {
 
 // ProtectedRoute component to protect routes
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const authContext = useContext(AuthContext);
+  const { token, telegramId } = useContext(AuthContext);
 
-  if (!authContext) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 
-  const { user } = authContext;
-  return user ? <>{children}</> : <Navigate to="/login" />;
+  return telegramId ? <>{children}</> : <Navigate to="/login" />;
 };
 
 const App: React.FC = () => {
@@ -158,7 +156,7 @@ const App: React.FC = () => {
             </div>
           </ProtectedRoute>
         } />
-        <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+        <Route path="/friends" element={<ProtectedRoute><Friends telegramId={useContext(AuthContext).telegramId} /></ProtectedRoute>} />
         <Route path="/airdrop" element={<ProtectedRoute><Airdrop /></ProtectedRoute>} />
         <Route path="/referrals" element={<ProtectedRoute><ReferralPage /></ProtectedRoute>} /> {/* Add the new route */}
       </Routes>

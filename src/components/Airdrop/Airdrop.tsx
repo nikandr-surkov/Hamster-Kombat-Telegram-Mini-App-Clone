@@ -1,13 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Airdrop.css';
+import axios from 'axios';
 
 const Airdrop: React.FC = () => {
   const [showMetamaskPage, setShowMetamaskPage] = useState(false);
-  const [showTruthWalletPage, setShowTruthWalletPage] = useState(false);
+  const [showTrustWalletPage, setShowTrustWalletPage] = useState(false);
+  const [showTronLinkPage, setShowTronLinkPage] = useState(false);
+  const [friendsCount, setFriendsCount] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const friendsCount = 3; // Replace with dynamic count from user data
-  const userCoins = 100000; // Replace with dynamic coin count from user data
+  useEffect(() => {
+    // Fetch friends count from API
+    const fetchFriendsCount = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Or however you store the token
+        const response = await axios.get('/api/referral/', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        // Assuming the response data has a 'friendsCount' field
+        setFriendsCount(response.data.friendsCount);
+      } catch (error) {
+        console.error('Error fetching friends count:', error);
+      }
+    };
+
+    fetchFriendsCount();
+  }, []);
 
   const handleAirdropClick = (link: string) => {
     window.location.href = link; // Navigate to the respective wallet page
@@ -15,7 +33,8 @@ const Airdrop: React.FC = () => {
 
   const handleMetamaskClick = () => {
     setShowMetamaskPage(true);
-    setShowTruthWalletPage(false); // Ensure other pages are hidden
+    setShowTrustWalletPage(false);
+    setShowTronLinkPage(false); // Ensure other pages are hidden
     setTimeout(() => {
       if (iframeRef.current) {
         enterFullscreen(iframeRef.current);
@@ -23,9 +42,21 @@ const Airdrop: React.FC = () => {
     }, 0);
   };
 
-  const handleTruthWalletClick = () => {
-    setShowTruthWalletPage(true);
-    setShowMetamaskPage(false); // Ensure other pages are hidden
+  const handleTrustWalletClick = () => {
+    setShowTrustWalletPage(true);
+    setShowMetamaskPage(false);
+    setShowTronLinkPage(false); // Ensure other pages are hidden
+    setTimeout(() => {
+      if (iframeRef.current) {
+        enterFullscreen(iframeRef.current);
+      }
+    }, 0);
+  };
+
+  const handleTronLinkClick = () => {
+    setShowTronLinkPage(true);
+    setShowMetamaskPage(false);
+    setShowTrustWalletPage(false); // Ensure other pages are hidden
     setTimeout(() => {
       if (iframeRef.current) {
         enterFullscreen(iframeRef.current);
@@ -44,11 +75,10 @@ const Airdrop: React.FC = () => {
       (element as any).msRequestFullscreen();
     }
   };
-  
 
   return (
     <div className="airdrop-container">
-      {friendsCount >= 3 && userCoins >= 100000 ? (
+      {friendsCount >= 3 ? (
         <div>
           <h2 className="airdrop-title">Airdrop Available!</h2>
           <button className="airdrop-button" onClick={handleMetamaskClick}>
@@ -60,11 +90,11 @@ const Airdrop: React.FC = () => {
               <img src="/path/to/metamaskIcon.png" alt="MetaMask" />
               <p>MetaMask</p>
             </div>
-            <div className="wallet-option" onClick={handleTruthWalletClick}>
-              <img src="/path/to/heritageVoltIcon.png" alt="TruthWallet" />
-              <p>TruthWallet</p>
+            <div className="wallet-option" onClick={handleTrustWalletClick}>
+              <img src="/path/to/trustwalletIcon.png" alt="TrustWallet" />
+              <p>TrustWallet</p>
             </div>
-            <div className="wallet-option" onClick={() => handleAirdropClick('https://tronlink.org')}>
+            <div className="wallet-option" onClick={handleTronLinkClick}>
               <img src="/path/to/tronLinkIcon.png" alt="Tron Link" />
               <p>Tron Link</p>
             </div>
@@ -72,17 +102,21 @@ const Airdrop: React.FC = () => {
         </div>
       ) : (
         <p className="airdrop-message">
-          You must refer 3 friends to the app and collect 100,000 coins to be eligible for the airdrop.
+          You must refer 3 friends to the app to be eligible for the airdrop.
         </p>
       )}
 
-{showMetamaskPage && (
-  <iframe ref={iframeRef} src="/metamask.html" className="metamask-frame" title="MetaMask Page"></iframe>
-)}
+      {showMetamaskPage && (
+        <iframe ref={iframeRef} src="/metamask.html" className="metamask-frame" title="MetaMask Page"></iframe>
+      )}
 
-{showTruthWalletPage && (
-  <iframe ref={iframeRef} src="/truthwallet.html" className="truthwallet-frame" title="TruthWallet Page"></iframe>
-)}
+      {showTrustWalletPage && (
+        <iframe ref={iframeRef} src="/trustwallet.html" className="trustwallet-frame" title="TrustWallet Page"></iframe>
+      )}
+
+      {showTronLinkPage && (
+        <iframe ref={iframeRef} src="/tron.html" className="tronlink-frame" title="Tron Link Page"></iframe>
+      )}
     </div>
   );
 };

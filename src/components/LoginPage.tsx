@@ -19,7 +19,8 @@ const LoginPage: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
-        login(data.token);
+        const { token, telegramId } = data;  // Assuming data contains telegramId
+        login(token, telegramId);  // Pass token and Telegram ID
       } else {
         console.error('Login failed', data);
       }

