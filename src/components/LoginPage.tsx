@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
     const { initDataRaw } = retrieveLaunchParams();
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/', {
+      const response = await fetch(' https://00b8-95-162-147-85.ngrok-free.app/api/auth/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
