@@ -24,13 +24,13 @@ const formatProfitPerHour = (profit: number) => {
 
 // ProtectedRoute component to protect routes
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { token, telegramId } = useContext(AuthContext);
+  const { telegramId } = useContext(AuthContext);
 
-  if (!token) {
+  if (!telegramId) {
     return <Navigate to="/login" />;
   }
 
-  return telegramId ? <>{children}</> : <Navigate to="/login" />;
+  return <>{children}</>;
 };
 
 const App: React.FC = () => {

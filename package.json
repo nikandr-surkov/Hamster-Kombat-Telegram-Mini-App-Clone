@@ -5,11 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env REACT_APP_PRODUCTION=false vite",
-  "build": "cross-env REACT_APP_PRODUCTION=true vite build",
-  "serve": "vite preview",
+    "build": "cross-env REACT_APP_PRODUCTION=true vite build",
+    "serve": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-    
   },
   "dependencies": {
     "@telegram-apps/sdk": "^1.1.3",
