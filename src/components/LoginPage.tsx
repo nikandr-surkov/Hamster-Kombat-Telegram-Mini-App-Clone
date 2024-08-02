@@ -1,47 +1,47 @@
-// src/pages/LoginPage.tsx
-
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { retrieveLaunchParams, LaunchParams as SdkLaunchParams } from '@telegram-apps/sdk';
 import { AuthContext } from '../context/AuthContext';
 import { InitData, User } from '../utils/types';
+import { loginUser } from '../api';
 
 const LoginPage: React.FC = () => {
   const { setTelegramId } = useContext(AuthContext);
   const [status, setStatus] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const { initData } = retrieveLaunchParams() as SdkLaunchParams & { initData: InitData };
-      console.log('Initialization Data:', initData); // Debugging log
+    const handleLogin = async () => {
+      try {
+        const { initData } = retrieveLaunchParams() as SdkLaunchParams & { initData: InitData };
 
-      if (initData) {
-        console.log('initData is present'); // Debugging log
+        if (initData && initData.user) {
+          const userData: User = {
+            // Ensure these fields match the backend's expectations
+            telegram_id: initData.user.id.toString(), // Ensure you are sending the correct ID field
+          };
 
-        if (initData.user) {
-          // Directly use initData.user as User type
-          const userData = initData.user as User; // Type assertion
-          console.log('User data:', userData); // Debugging log
+          setTelegramId(userData.telegram_id);
 
-          if (userData.id) {
-            setTelegramId(userData.id.toString());
+          try {
+            const response = await loginUser(userData);
             setStatus('Login successful!');
-          } else {
-            setStatus('User ID is not available.');
-            console.error('User ID is not available in user data.');
+            navigate('/'); // Redirect to the main page after successful login
+          } catch (error) {
+            setStatus('Login failed. Please try again.');
+            console.error('Error during login API call:', error);
           }
         } else {
           setStatus('Initialization data does not contain user information.');
-          console.error('Initialization data does not contain user information.');
         }
-      } else {
-        setStatus('Initialization data is null or undefined.');
-        console.error('Initialization data is null or undefined.');
+      } catch (error) {
+        setStatus('Error retrieving initialization data. Please check console for details.');
+        console.error('Error retrieving initialization data:', error);
       }
-    } catch (error) {
-      setStatus('Error retrieving initialization data. Please check console for details.');
-      console.error('Error retrieving initialization data:', error);
-    }
-  }, [setTelegramId]);
+    };
+
+    handleLogin();
+  }, [setTelegramId, navigate]);
 
   return (
     <div>

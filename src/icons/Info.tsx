@@ -1,13 +1,22 @@
-import { IconProps } from "../utils/types";
+// Info.tsx
+import React from 'react';
 
-
-const Info: React.FC<IconProps> = ({ size = 24, className = "" }) => {
-
-    const svgSize = `${size}px`;
-
-    return (
-        <svg fill="currentColor" className={className} height={svgSize} width={svgSize} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm1,15a1,1,0,0,1-2,0V11a1,1,0,0,1,2,0ZM12,8a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,12,8Z"></path></g></svg>
-    );
-};
+const Info = ({ size, className }: { size: number; className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2" // Fix camelCase
+    strokeLinecap="round" // Fix camelCase
+    strokeLinejoin="round" // Fix camelCase
+    className={className}
+  >
+    <path d="M12 8v8" />
+    <path d="M8 12h8" />
+  </svg>
+);
 
 export default Info;

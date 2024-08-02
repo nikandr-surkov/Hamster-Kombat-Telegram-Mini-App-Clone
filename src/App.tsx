@@ -88,7 +88,7 @@ const App: React.FC = () => {
                           <p className="text-sm">{levelIndex + 1} <span className="text-[#95908a]">/ {levelNames.length}</span></p>
                         </div>
                         <div className="w-full bg-[#16181c] rounded-full h-2">
-                          <div className="bg-gradient-to-r from-[#ff5151] to-[#fa3dff] h-2 rounded-full" style={{ width: `${calculateProgress(points, pointsForNextLevel)}%` }}></div>
+                          <div className="bg-gradient-to-r h-2 rounded-full" style={{ width: `${calculateProgress(points, pointsForNextLevel)}%` }}></div>
                         </div>
                       </div>
                     </div>

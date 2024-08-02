@@ -1,27 +1,14 @@
-.progress-gradient {
-  background: linear-gradient(to right, #90ef89, #d692dd, #726edd);
-}
-
-.top-glow {
-  box-shadow: 0 -26px 20px rgba(243, 186, 47, 0.3);
-}
-
-/* Define the keyframes for the blinking animation */
-@keyframes blink {
-  0% {
+/* Keyframes */
+@keyframes fade {
+  from {
     opacity: 1;
   }
-
-  50% {
+  to {
     opacity: 0;
   }
-
-  100% {
-    opacity: 1;
-  }
 }
 
-/* Apply the animation to the dot class */
+/* Utility Classes */
 .dot {
   width: 6px;
   height: 6px;
@@ -31,6 +18,14 @@
   top: 10px;
   right: 10px;
   animation: blink 1s infinite;
+}
+
+.progress-gradient {
+  background: linear-gradient(to right, #90ef89, #d692dd, #726edd);
+}
+
+.top-glow {
+  box-shadow: 0 -26px 20px rgba(243, 186, 47, 0.3);
 }
 
 .circle-outer {
@@ -52,14 +47,150 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes float {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  100% {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
+.bg-black {
+  background-color: black;
+}
+
+.text-white {
+  color: white;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.max-w-xl {
+  max-width: 36rem;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.space-x-2 > :not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.space-x-4 > :not(:last-child) {
+  margin-right: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.left-1\/2 {
+  left: 50%;
+}
+
+.transform {
+  transform: translateX(-50%);
+}
+
+.z-0 {
+  z-index: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.relative {
+  position: relative;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.text-5xl {
+  font-size: 3rem;
+}
+
+.animate-fade {
+  animation: fade 1s ease-out forwards;
+}
+
+.bg-[#1d2025] {
+  background-color: #1d2025;
+}
+
+.text-[#d4d4d4] {
+  color: #d4d4d4;
+}
+
+.text-[#95908a] {
+  color: #95908a;
+}
+
+.bg-[#16181c] {
+  background-color: #16181c;
+}
+
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #ff5151, #fa3dff);
 }
