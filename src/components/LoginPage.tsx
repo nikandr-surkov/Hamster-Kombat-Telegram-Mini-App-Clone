@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { retrieveLaunchParams, LaunchParams as SdkLaunchParams } from '@telegram-apps/sdk';
 import { AuthContext } from '../context/AuthContext';
-import { InitData, User } from '../utils/types';
+import { User } from '../utils/types';
 import { loginUser } from '../api';
 
 const LoginPage: React.FC = () => {
@@ -13,20 +13,28 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const handleLogin = async () => {
       try {
-        const { initData } = retrieveLaunchParams() as SdkLaunchParams & { initData: InitData };
+        const { initData } = retrieveLaunchParams() as SdkLaunchParams & { initData: { user: { id: string } } };
 
         if (initData && initData.user) {
           const userData: User = {
-            // Ensure these fields match the backend's expectations
-            telegram_id: initData.user.id.toString(), // Ensure you are sending the correct ID field
+            telegram_id: initData.user.id.toString(),
           };
 
+          console.log('Retrieved userData:', userData);
+
           setTelegramId(userData.telegram_id);
+          console.log('Set Telegram ID:', userData.telegram_id);
 
           try {
             const response = await loginUser(userData);
-            setStatus('Login successful!');
-            navigate('/'); // Redirect to the main page after successful login
+            console.log('Login API Response:', response);
+            const data = await response.json();
+            if (data.message === 'Login successful!') {
+              setStatus('Login successful!');
+              navigate('/'); // Redirect to the main page after successful login
+            } else {
+              setStatus('Login failed. Please try again.');
+            }
           } catch (error) {
             setStatus('Login failed. Please try again.');
             console.error('Error during login API call:', error);

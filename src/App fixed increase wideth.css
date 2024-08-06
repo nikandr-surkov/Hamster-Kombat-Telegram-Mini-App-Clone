@@ -44,10 +44,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48vw; /* Adjusted for responsiveness */
-  height: 48vw; /* Adjusted for responsiveness */
-  max-width: 302px;
-  max-height: 302px;
+  width: 40vw; /* Adjusted for responsiveness */
+  height: 40vw; /* Adjusted for responsiveness */
+  max-width: 252px;
+  max-height: 252px;
   transition: transform 0.3s;
   overflow: hidden; /* Hide any overflow */
 }
@@ -82,8 +82,6 @@ body {
 }
 
 .transform-wrapper {
-  position: relative;
-  z-index: 10;
   overflow: hidden;
   width: 100%;
   display: flex;
@@ -97,7 +95,6 @@ body {
 
 .text-center {
   text-align: center;
-  z-index: 20;
 }
 
 .text-2xl {
@@ -199,7 +196,7 @@ body {
 }
 
 .fixed {
-  z-index: 50;
+  position: fixed;
 }
 
 .bottom-0 {

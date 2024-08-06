@@ -1,75 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import './Friends.css';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
-interface Friend {
-  id: number;
-  name: string;
-}
+// Function to fetch referral link
+const fetchReferralLink = async (telegramId) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/referral-link/?telegram_id=${telegramId}`);
+    const contentType = response.headers.get('content-type');
 
-interface FriendsProps {
-  telegramId: string | null;  // Accept Telegram ID as a prop
-}
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch referral link: ${errorText}`);
+    }
 
-const Friends: React.FC<FriendsProps> = ({ telegramId }) => {
-  const [friendsList, setFriendsList] = useState<Friend[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      return data.referral_link;
+    } else {
+      const text = await response.text();
+      throw new Error(`Expected JSON, but got: ${text}`);
+    }
+  } catch (error) {
+    console.error(`fetchReferralLink: ${error}`);
+    throw error;
+  }
+};
+
+// Function to fetch referrals
+const fetchReferrals = async (telegramId) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/referrals/?telegram_id=${telegramId}`);
+    const contentType = response.headers.get('content-type');
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch referral data: ${errorText}`);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      return data.referrals;
+    } else {
+      const text = await response.text();
+      throw new Error(`Expected JSON, but got: ${text}`);
+    }
+  } catch (error) {
+    console.error(`fetchReferrals: ${error}`);
+    throw error;
+  }
+};
+
+const Friends = () => {
+  const [referralLink, setReferralLink] = useState('');
+  const [referrals, setReferrals] = useState([]);
+  const [error, setError] = useState(null);
+  const { telegramId } = useContext(AuthContext);
 
   useEffect(() => {
     if (telegramId) {
-      const fetchFriends = async () => {
+      const getReferralData = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/referral/`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming token is stored in localStorage
-            },
-          });
+          // Fetch referral link
+          const link = await fetchReferralLink(telegramId);
+          setReferralLink(link);
 
-          if (response.ok) {
-            const data = await response.json();
-            setFriendsList(data); // Adjust according to actual response structure
-          } else {
-            setError('Failed to fetch friends');
-          }
+          // Fetch referrals
+          const referralData = await fetchReferrals(telegramId);
+          setReferrals(referralData);
         } catch (error) {
-          setError('An error occurred while fetching friends');
-        } finally {
-          setLoading(false);
+          setError(error.message);
         }
       };
 
-      fetchFriends();
-    } else {
-      setLoading(false);
-      setError('Telegram ID is missing');
+      getReferralData();
     }
   }, [telegramId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   return (
-    <div className="friends-container">
-      <div className="referral-box">
-        <h2 className="referral-title">Referral Link</h2>
-        <p className="referral-link">{`https://example.com/referral?user=${telegramId}`}</p>
-        <button className="copy-button" onClick={() => navigator.clipboard.writeText(`https://example.com/referral?user=${telegramId}`)}>
-          Copy Link
-        </button>
-      </div>
-      <div className="friends-list-box">
-        <h2 className="friends-list-title">Friends Connected</h2>
-        <ul className="friends-list">
-          {friendsList.length > 0 ? (
-            friendsList.map(friend => (
-              <li key={friend.id} className="friend-item">{friend.name}</li>
-            ))
-          ) : (
-            <li>No friends found</li>
-          )}
-        </ul>
-      </div>
+    <div>
+      <h1>Friends</h1>
+      {error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <>
+          <p>Referral Link: <a href={referralLink} target="_blank" rel="noopener noreferrer">{referralLink}</a></p>
+          <p>Telegram ID: {telegramId}</p>
+          <h2>Referred Users:</h2>
+          <ul>
+            {referrals.map((referral) => (
+              <li key={referral.telegram_id}>
+                Username: {referral.username}, Telegram ID: {referral.telegram_id}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 };
