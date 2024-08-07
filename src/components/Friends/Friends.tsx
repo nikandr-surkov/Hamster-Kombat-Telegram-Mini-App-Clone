@@ -1,5 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  Divider,
+  CircularProgress,
+  Alert
+} from '@mui/material';
 
 // Function to fetch referral link
 const fetchReferralLink = async (telegramId) => {
@@ -50,9 +61,10 @@ const fetchReferrals = async (telegramId) => {
 };
 
 const Friends = () => {
-  const [referralLink, setReferralLink] = useState('');
-  const [referrals, setReferrals] = useState([]);
-  const [error, setError] = useState(null);
+  const [referralLink, setReferralLink] = useState<string>('');
+  const [referrals, setReferrals] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const { telegramId } = useContext(AuthContext);
 
   useEffect(() => {
@@ -67,7 +79,9 @@ const Friends = () => {
           const referralData = await fetchReferrals(telegramId);
           setReferrals(referralData);
         } catch (error) {
-          setError(error.message);
+          setError((error as Error).message);
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -75,26 +89,47 @@ const Friends = () => {
     }
   }, [telegramId]);
 
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   return (
-    <div>
-      <h1>Friends</h1>
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Friends
+      </Typography>
       {error ? (
-        <p>Error: {error}</p>
+        <Alert severity="error">{error}</Alert>
       ) : (
         <>
-          <p>Referral Link: <a href={referralLink} target="_blank" rel="noopener noreferrer">{referralLink}</a></p>
-          <p>Telegram ID: {telegramId}</p>
-          <h2>Referred Users:</h2>
-          <ul>
+          <Typography variant="h6" gutterBottom>
+            Referral Link:
+          </Typography>
+          <Typography variant="body1">
+            <a href={referralLink} target="_blank" rel="noopener noreferrer">{referralLink}</a>
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Telegram ID:
+          </Typography>
+          <Typography variant="body1">
+            {telegramId}
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Referred Users:
+          </Typography>
+          <List>
             {referrals.map((referral) => (
-              <li key={referral.telegram_id}>
-                Username: {referral.username}, Telegram ID: {referral.telegram_id}
-              </li>
+              <ListItem key={referral.telegram_id}>
+                <ListItemText
+                  primary={`Username: ${referral.username}`}
+                  secondary={`Telegram ID: ${referral.telegram_id}`}
+                />
+              </ListItem>
             ))}
-          </ul>
+          </List>
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

