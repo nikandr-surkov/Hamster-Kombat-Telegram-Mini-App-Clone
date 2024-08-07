@@ -23,6 +23,7 @@ const LoginPage: React.FC = () => {
           console.log('Retrieved userData:', userData);
 
           setTelegramId(userData.telegram_id);
+          localStorage.setItem('telegram_id', userData.telegram_id);  // Store telegram_id in localStorage
           console.log('Set Telegram ID:', userData.telegram_id);
 
           try {

@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
                 console.log("Telegram ID:", telegramId2);
                 setTelegramId(telegramId2);
+                localStorage.setItem('telegram_id', telegramId2);  // Store telegram_id in localStorage
 
                 const response = await fetch("http://127.0.0.1:8000/api/login/", {
                     method: "POST",

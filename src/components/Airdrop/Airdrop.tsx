@@ -10,22 +10,44 @@ const Airdrop: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
-    // Fetch friends count from API
     const fetchFriendsCount = async () => {
       try {
-        const token = localStorage.getItem('token'); // Or however you store the token
-        const response = await axios.get('/api/referral/', {
-          headers: { Authorization: `Bearer ${token}` }
+        const telegramId = localStorage.getItem('telegram_id'); // Assuming telegram_id is stored in local storage
+        console.log('Retrieved telegram_id from localStorage:', telegramId); // Add this line
+        if (!telegramId) {
+          throw new Error('No telegram ID found');
+        }
+
+        const response = await axios.get('http://127.0.0.1:8000/api/referrals', {
+          params: { telegram_id: telegramId }
         });
-        // Assuming the response data has a 'friendsCount' field
-        setFriendsCount(response.data.friendsCount);
+
+        console.log('API Response:', response.data); // Add this line
+
+        // Assuming the response data has a 'referrals' field which is an array
+        if (response.data && response.data.referrals) {
+          setFriendsCount(response.data.referrals.length);
+        } else {
+          console.error('Invalid response format:', response.data);
+        }
       } catch (error) {
         console.error('Error fetching friends count:', error);
+
+        if (error.response) {
+          console.error('Response data:', error.response.data);
+          console.error('Response status:', error.response.status);
+          console.error('Response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('Request data:', error.request);
+        } else {
+          console.error('Error message:', error.message);
+        }
       }
     };
 
     fetchFriendsCount();
   }, []);
+  
 
   const handleAirdropClick = (link: string) => {
     window.location.href = link; // Navigate to the respective wallet page
