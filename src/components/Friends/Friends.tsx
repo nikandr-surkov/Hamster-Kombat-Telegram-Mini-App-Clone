@@ -5,14 +5,12 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText,
-  ListItemButton,
-  Divider,
+  Button,
   CircularProgress,
   Alert
 } from '@mui/material';
+import './Friends.css'; // Make sure to import the CSS file
 
-// Function to fetch referral link
 const fetchReferralLink = async (telegramId) => {
   try {
     const response = await fetch(`http://127.0.0.1:8000/api/referral-link/?telegram_id=${telegramId}`);
@@ -36,7 +34,6 @@ const fetchReferralLink = async (telegramId) => {
   }
 };
 
-// Function to fetch referrals
 const fetchReferrals = async (telegramId) => {
   try {
     const response = await fetch(`http://127.0.0.1:8000/api/referrals/?telegram_id=${telegramId}`);
@@ -71,11 +68,8 @@ const Friends = () => {
     if (telegramId) {
       const getReferralData = async () => {
         try {
-          // Fetch referral link
           const link = await fetchReferralLink(telegramId);
           setReferralLink(link);
-
-          // Fetch referrals
           const referralData = await fetchReferrals(telegramId);
           setReferrals(referralData);
         } catch (error) {
@@ -94,39 +88,41 @@ const Friends = () => {
   }
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
+    <Container className="friends-container">
+      <Typography variant="h4" gutterBottom className="friends-title">
         Friends
       </Typography>
       {error ? (
         <Alert severity="error">{error}</Alert>
       ) : (
         <>
-          <Typography variant="h6" gutterBottom>
-            Referral Link:
-          </Typography>
-          <Typography variant="body1">
-            <a href={referralLink} target="_blank" rel="noopener noreferrer">{referralLink}</a>
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Telegram ID:
-          </Typography>
-          <Typography variant="body1">
-            {telegramId}
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Referred Users:
-          </Typography>
-          <List>
-            {referrals.map((referral) => (
-              <ListItem key={referral.telegram_id}>
-                <ListItemText
-                  primary={`Username: ${referral.username}`}
-                  secondary={`Telegram ID: ${referral.telegram_id}`}
-                />
-              </ListItem>
-            ))}
-          </List>
+          <div className="referral-box">
+            <Typography variant="h6" className="referral-title">
+              Referral Link:
+            </Typography>
+            <Typography variant="body1" className="referral-link">
+              <a href={referralLink} target="_blank" rel="noopener noreferrer" style={{ color: '#f3ba2f' }}>
+                {referralLink}
+              </a>
+            </Typography>
+            <Button variant="contained" className="copy-button">
+              Copy Link
+            </Button>
+          </div>
+          <div className="friends-list-box">
+            <Typography variant="h6" className="friends-list-title">
+              Referred Users:
+            </Typography>
+            <List className="friends-list">
+              {referrals.map((referral) => (
+                <ListItem key={referral.telegram_id} className="friend-item">
+                  <Typography variant="body2">
+                    Username: {referral.username}, Telegram ID: {referral.telegram_id}
+                  </Typography>
+                </ListItem>
+              ))}
+            </List>
+          </div>
         </>
       )}
     </Container>

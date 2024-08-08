@@ -16,9 +16,11 @@
     "@mui/material": "^5.16.6",
     "@telegram-apps/sdk": "^1.1.3",
     "axios": "^1.7.2",
+    "mdb-react-ui-kit": "^8.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "react-spring": "^9.7.4"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

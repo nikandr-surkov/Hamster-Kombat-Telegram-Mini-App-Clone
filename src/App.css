@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+
 /* Keyframes */
 @keyframes float {
   0% {
@@ -8,6 +11,33 @@
     opacity: 0;
     transform: translateY(-30px);
   }
+}
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+/* Styling for the floating text */
+.floating-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem; /* Adjust font size as needed */
+  color: #f3ba2f; /* Text color */
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 4px;
+  margin-top: 20vh; /* Center vertically */
+  background: linear-gradient(45deg, #ff5151, #fa3dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: float 3s infinite; /* Adjust timing as needed */
 }
 
 body {

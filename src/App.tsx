@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
 import { binanceLogo, dollarCoin, hamsterCoin, mainCharacter } from './images';
@@ -9,12 +9,13 @@ import Friends from './components/Friends/Friends';
 import Airdrop from './components/Airdrop/Airdrop';
 import { AuthContext } from './context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
+import AnimatedText from './AnimatedText'; // Import the AnimatedText component
 
 const MainPage: React.FC = () => {
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
-  const pointsToAdd = 10; // Example points added per click
-  const pointsForNextLevel = 100; // Example points required to level up
+  const pointsToAdd = 10;
+  const pointsForNextLevel = 100;
 
   const navigate = useNavigate();
 
@@ -23,8 +24,6 @@ const MainPage: React.FC = () => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-
-    console.log('x:', x, 'y:', y);
 
     card.style.transform = `perspective(1000px) rotateX(${Math.min(Math.max(-15, -y / 10), 15)}deg) rotateY(${Math.min(Math.max(-15, x / 10), 15)}deg)`;
     setTimeout(() => {
@@ -52,7 +51,8 @@ const MainPage: React.FC = () => {
             <div className="flex items-center w-1/3">
               <div className="w-full">
                 <div className="flex justify-between">
-                  <p className="text-sm">TAP BIRD APP</p>
+                  {/* Replace the static text with the AnimatedText component */}
+                  <AnimatedText />
                 </div>
                 <div className="w-full bg-[#16181c] rounded-full h-2">
                   <div className="bg-gradient-to-r h-2 rounded-full" style={{ width: `${(points / pointsForNextLevel) * 100}%` }}></div>
@@ -72,7 +72,16 @@ const MainPage: React.FC = () => {
         </div>
         <div className="relative h-screen bg-[#1d2025] text-white flex flex-col items-center justify-center">
           <div className="text-center mb-4 z-20">
-            <p className="text-xl font-bold">Total Coins</p>
+            <p
+              className="text-xl font-bold"
+              style={{
+                background: 'linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Total Coins
+            </p>
             <p className="text-l">{points}</p>
           </div>
           <div className="transform-wrapper z-10">
@@ -112,19 +121,26 @@ const MainPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-        <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/')}>
-          <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
-          <p className="mt-1">Exchange</p>
-        </div>
-        <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/friends')}>
-          <img src={hamsterCoin} alt="Friends" className="w-8 h-8 mx-auto" />
-          <p className="mt-1">Friends</p>
-        </div>
-        <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/airdrop')}>
-          <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
-          <p className="mt-1">Airdrop</p>
-        </div>
+    </div>
+  );
+};
+
+const Footer: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
+      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/')}>
+        <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
+        <p className="mt-1">Exchange</p>
+      </div>
+      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/friends')}>
+        <img src={hamsterCoin} alt="Friends" className="w-8 h-8 mx-auto" />
+        <p className="mt-1">Friends</p>
+      </div>
+      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/airdrop')}>
+        <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
+        <p className="mt-1">Airdrop</p>
       </div>
     </div>
   );
@@ -151,6 +167,7 @@ const App: React.FC = () => {
         />
         <Route path="/airdrop" element={<Airdrop />} />
       </Routes>
+      <Footer />
     </ErrorBoundary>
   );
 };
