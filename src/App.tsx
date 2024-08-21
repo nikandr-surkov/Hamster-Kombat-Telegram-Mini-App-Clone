@@ -77,20 +77,48 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleCardTouch = (e: React.TouchEvent<HTMLDivElement>) => {
     const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
-    setTimeout(() => {
-      card.style.transform = '';
-    }, 100);
-
-    setPoints(points + pointsToAdd);
-    setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+	for (let i = 0; i < e.touches.length; i++) {
+		handleCardEvents(e.touches[i], card);
+	}
   };
 
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+	const card = e.currentTarget;
+	if ("touches" in e) 
+		console.log("not a click");
+		
+	handleCardEvents(e, card)
+  };
+
+  const handleCardEvents = (e: React.MouseEvent<HTMLDivElement> | React.Touch, card: EventTarget & HTMLDivElement) => {
+	const rect = card.getBoundingClientRect();
+	const x = e.clientX - rect.left - rect.width / 2;
+	const y = e.clientY - rect.top - rect.height / 2;
+	card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
+	setTimeout(() => {
+      card.style.transform = '';
+	}, 100);
+	setPoints(points + pointsToAdd);
+	setClicks([...clicks, { id: Date.now(), x: e.clientX, y: e.clientY }]);
+  }
+
+  //
+  //const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  //  const card = e.currentTarget;
+  //  const rect = card.getBoundingClientRect();
+  //  const x = e.clientX - rect.left - rect.width / 2;
+  //  const y = e.clientY - rect.top - rect.height / 2;
+  //  card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
+  //  setTimeout(() => {
+  //    card.style.transform = '';
+  //  }, 100);
+  //
+  //  setPoints(points + pointsToAdd);
+  //  setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+  //};
+  //
   const handleAnimationEnd = (id: number) => {
     setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
   };
@@ -206,6 +234,7 @@ const App: React.FC = () => {
             <div className="px-4 mt-4 flex justify-center">
               <div
                 className="w-80 h-80 p-4 rounded-full circle-outer"
+				onTouchStart={handleCardTouch}
                 onClick={handleCardClick}
               >
                 <div className="w-full h-full rounded-full circle-inner">
