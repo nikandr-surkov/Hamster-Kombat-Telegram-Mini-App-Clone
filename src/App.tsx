@@ -10,6 +10,7 @@ import Airdrop from './components/Airdrop/Airdrop';
 import { AuthContext } from './context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import AnimatedText from './AnimatedText'; // Import the AnimatedText component
+import DepositBox from './DepositBox';
 
 const MainPage: React.FC = () => {
   const [points, setPoints] = useState(0);
@@ -72,41 +73,8 @@ const MainPage: React.FC = () => {
         </div>
         <div className="relative h-screen bg-[#1d2025] text-white flex flex-col items-center justify-center">
           <div className="text-center mb-4 z-20">
-            <p
-              className="text-xl font-bold"
-              style={{
-                background: 'linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Total Coins
-            </p>
-            <p className="text-l">{points}</p>
-          </div>
-          <div className="transform-wrapper z-10">
-            <div className="w-56 h-56 p-4 rounded-full circle-outer" onClick={handleCardClick}>
-              <div className="w-full h-full rounded-full circle-inner">
-                <img src={mainCharacter} alt="Main Character" className="w-full h-full" />
-              </div>
-            </div>
-          </div>
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-            {clicks.map((click) => (
-              <div
-                key={click.id}
-                className="absolute text-5xl font-bold opacity-0 text-white pointer-events-none"
-                style={{
-                  top: `${click.y - 42}px`,
-                  left: `${click.x - 28}px`,
-                  animation: `float 1s ease-out`,
-                  transform: 'translate(-50%, -50%)'
-                }}
-                onAnimationEnd={() => handleAnimationEnd(click.id)}
-              >
-                +10
-              </div>
-            ))}
+          <DepositBox />
+
           </div>
         </div>
 
