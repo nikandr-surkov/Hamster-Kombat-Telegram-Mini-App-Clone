@@ -1,13 +1,23 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
-export const AuthContext = createContext({
-    telegramId: null as string | null,
-    setTelegramId: (id: string) => {}
+interface AuthContextType {
+    telegramId: string | null;
+    subaddress: string | null;
+    setTelegramId: (id: string) => void;
+    setSubaddress: (address: string) => void;
+}
+
+export const AuthContext = createContext<AuthContextType>({
+    telegramId: null,
+    subaddress: null,
+    setTelegramId: () => {},
+    setSubaddress: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [subaddress, setSubaddress] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTelegramId = async () => {
@@ -23,9 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const user = launchParams.initData.user;
                 console.log("Retrieved user object:", user);
 
-                const telegramId2 = user.id;
+                const telegramId2 = user.id?.toString(); // Convert number to string
                 if (!telegramId2) {
-                    console.error("Telegram user ID is missing");
+                    console.error("Telegram user ID is missing or invalid");
                     return;
                 }
 
@@ -42,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 });
 
                 if (!response.ok) {
-                    console.error("Failed to fetch Telegram ID from backend. Status:", response.status);
+                    console.error("Failed to fetch data from backend. Status:", response.status);
                     return;
                 }
 
@@ -50,9 +60,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 console.log("Backend response:", data);
 
                 if (data.message === 'Login successful!') {
-                    setTelegramId(telegramId2); // Only set the actual ID
+                    if (data.subaddress) {
+                        setSubaddress(data.subaddress); // Set the subaddress from backend
+                    } else {
+                        console.error("Subaddress is missing in backend response");
+                    }
                 } else {
-                    console.error("Unexpected response format from backend");
+                    console.error("Unexpected response format from backend. Message:", data.message);
                 }
             } catch (error) {
                 console.error("Error fetching Telegram ID:", error);
@@ -63,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ telegramId, setTelegramId }}>
+        <AuthContext.Provider value={{ telegramId, subaddress, setTelegramId, setSubaddress }}>
             {children}
         </AuthContext.Provider>
     );

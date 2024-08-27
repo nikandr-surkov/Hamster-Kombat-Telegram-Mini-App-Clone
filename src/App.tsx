@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
-import { binanceLogo, dollarCoin, hamsterCoin, mainCharacter } from './images';
+import { binanceLogo, dollarCoin, hamsterCoin } from './images';
 import Info from './icons/Info';
 import Settings from './icons/Settings';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -9,10 +9,11 @@ import Friends from './components/Friends/Friends';
 import Airdrop from './components/Airdrop/Airdrop';
 import { AuthContext } from './context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
-import AnimatedText from './AnimatedText'; // Import the AnimatedText component
+import AnimatedText from './AnimatedText';
 import DepositBox from './DepositBox';
 
 const MainPage: React.FC = () => {
+  const { telegramId } = useContext(AuthContext);
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
   const pointsToAdd = 10;
@@ -52,7 +53,6 @@ const MainPage: React.FC = () => {
             <div className="flex items-center w-1/3">
               <div className="w-full">
                 <div className="flex justify-between">
-                  {/* Replace the static text with the AnimatedText component */}
                   <AnimatedText />
                 </div>
                 <div className="w-full bg-[#16181c] rounded-full h-2">
@@ -73,11 +73,9 @@ const MainPage: React.FC = () => {
         </div>
         <div className="relative h-screen bg-[#1d2025] text-white flex flex-col items-center justify-center">
           <div className="text-center mb-4 z-20">
-          <DepositBox />
-
+            <DepositBox telegramId={telegramId} />
           </div>
         </div>
-
         <div className="relative bg-[#1d2025] p-4 rounded-t-2xl mt-4 z-10 max-w-full">
           <div className="text-sm mt-4 flex items-center justify-between">
             <button onClick={() => navigate('/friends')} className="p-2 bg-[#1d2025] rounded-lg">
