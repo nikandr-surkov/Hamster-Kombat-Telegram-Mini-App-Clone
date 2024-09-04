@@ -35,7 +35,7 @@ const DepositBox: React.FC = () => {
     try {
       setLoading(true);
 
-      const transactionsResponse = await axios.get('https://42ba-51-75-120-6.ngrok-free.app/wallet/transactions/', {
+      const transactionsResponse = await axios.get('https://6861-51-75-120-6.ngrok-free.app/wallet/transactions/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

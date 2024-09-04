@@ -43,16 +43,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setTelegramId(telegramId2);
                 localStorage.setItem('telegram_id', telegramId2);  // Store telegram_id in localStorage
 
-                const response = await fetch("http://127.0.0.1:8000/api/login/", {
+                // Send the Telegram ID to the backend
+                const response = await fetch("https://6861-51-75-120-6.ngrok-free.app/api/telegram-login/", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ telegram_id: telegramId2 })
                 });
 
                 if (!response.ok) {
                     console.error("Failed to fetch data from backend. Status:", response.status);
+                    // Log the response body for debugging purposes
+                    const responseBody = await response.text();
+                    console.error("Response body:", responseBody);
                     return;
                 }
 
