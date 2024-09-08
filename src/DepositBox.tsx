@@ -12,30 +12,28 @@ interface Transaction {
 }
 
 const DepositBox: React.FC = () => {
-  const [address, setAddress] = useState<string>('');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isAddressCopied, setIsAddressCopied] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const { telegramId, subaddress } = useContext(AuthContext);
+  const { telegramId, address } = useContext(AuthContext);
 
   useEffect(() => {
-    if (telegramId && subaddress) {
-      console.log("Telegram ID and Subaddress are both available.");
-      setAddress(subaddress.subaddress); // Access the `subaddress` property within the object
+    if (telegramId && address) {
+      console.log("Telegram ID and Address are both available.");
       fetchTransactions();
-      setLoading(false);
-    } else {
-      console.log("Waiting for Telegram ID and Subaddress.");
-      setLoading(true);
+    } else if (!telegramId) {
+      console.log("Waiting for Telegram ID.");
+    } else if (!address) {
+      console.log("Waiting for Address.");
     }
-  }, [telegramId, subaddress]);
+  }, [telegramId, address]);
 
   const fetchTransactions = async () => {
     try {
       setLoading(true);
 
-      const transactionsResponse = await axios.get('https://6861-51-75-120-6.ngrok-free.app/wallet/transactions/', {
+      const transactionsResponse = await axios.get('https://aa72-51-75-120-6.ngrok-free.app/wallet/deposit/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -54,10 +52,22 @@ const DepositBox: React.FC = () => {
   };
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(address);
-    setIsAddressCopied(true);
-    setTimeout(() => setIsAddressCopied(false), 2000);
+    if (address) {
+      navigator.clipboard.writeText(address);
+      setIsAddressCopied(true);
+      setTimeout(() => setIsAddressCopied(false), 2000);
+    }
   };
+
+  if (!telegramId || !address) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-gray-500">
+          {telegramId ? 'Loading address...' : 'Waiting for Telegram ID...'}
+        </p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -82,11 +92,12 @@ const DepositBox: React.FC = () => {
         Send TRX to the address below to make a deposit.
       </p>
       <div className="bg-gray-100 p-4 rounded-md text-center w-full break-words">
-        <p className="font-mono text-sm text-gray-700">{address}</p>
+        <p className="font-mono text-sm text-gray-700">{address || 'Loading address...'}</p>
       </div>
       <button
         onClick={handleCopyAddress}
         className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+        disabled={!address}
       >
         {isAddressCopied ? (
           <>
@@ -133,15 +144,8 @@ const DepositBox: React.FC = () => {
                     <td className="py-2 px-4 text-sm text-gray-700">
                       {tx.amount}
                     </td>
-                    <td className="py-2 px-4 text-sm text-blue-500 break-all">
-                      <a
-                        href={`https://tronscan.org/#/transaction/${tx.tx_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        {tx.tx_id.substring(0, 10)}...
-                      </a>
+                    <td className="py-2 px-4 text-sm text-gray-700">
+                      {tx.tx_id}
                     </td>
                   </tr>
                 ))}
@@ -150,7 +154,7 @@ const DepositBox: React.FC = () => {
           </div>
         </div>
       ) : (
-        <p className="text-gray-500 mt-6">No deposit history available.</p>
+        <p className="text-gray-500 text-center mt-6">No deposit history found.</p>
       )}
     </div>
   );

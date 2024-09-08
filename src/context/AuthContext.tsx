@@ -3,21 +3,21 @@ import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
 interface AuthContextType {
     telegramId: string | null;
-    subaddress: string | null;
+    address: string | null;
     setTelegramId: (id: string) => void;
-    setSubaddress: (address: string) => void;
+    setAddress: (address: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
     telegramId: null,
-    subaddress: null,
+    address: null,
     setTelegramId: () => {},
-    setSubaddress: () => {},
+    setAddress: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [telegramId, setTelegramId] = useState<string | null>(null);
-    const [subaddress, setSubaddress] = useState<string | null>(null);
+    const [address, setAddress] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTelegramId = async () => {
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 localStorage.setItem('telegram_id', telegramId2);  // Store telegram_id in localStorage
 
                 // Send the Telegram ID to the backend
-                const response = await fetch("https://6861-51-75-120-6.ngrok-free.app/api/telegram-login/", {
+                const response = await fetch("https://aa72-51-75-120-6.ngrok-free.app/user/telegram-login/", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
                 if (!response.ok) {
                     console.error("Failed to fetch data from backend. Status:", response.status);
-                    // Log the response body for debugging purposes
                     const responseBody = await response.text();
                     console.error("Response body:", responseBody);
                     return;
@@ -63,11 +62,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const data = await response.json();
                 console.log("Backend response:", data);
 
+                // Check if the backend response is successful
                 if (data.message === 'Login successful!') {
-                    if (data.subaddress) {
-                        setSubaddress(data.subaddress); // Set the subaddress from backend
+                    // Address validation logic
+                    if (data.address && typeof data.address.address === 'string') { // Fixing the access issue here
+                        setAddress(data.address.address);  // Set the address if valid
                     } else {
-                        console.error("Subaddress is missing in backend response");
+                        console.error("Address is missing or not a string in backend response");
                     }
                 } else {
                     console.error("Unexpected response format from backend. Message:", data.message);
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ telegramId, subaddress, setTelegramId, setSubaddress }}>
+        <AuthContext.Provider value={{ telegramId, address, setTelegramId, setAddress }}>
             {children}
         </AuthContext.Provider>
     );
