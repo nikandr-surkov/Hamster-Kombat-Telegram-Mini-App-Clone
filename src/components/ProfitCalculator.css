@@ -1,0 +1,56 @@
+/* src/components/ProfitCalculator.css */
+
+.input-group {
+    margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group select {
+    width: 80%; 
+    padding: 15px;
+    margin-top: 10px;
+    margin-left: 35px;
+    border-radius: 8px;
+    border: 1px solid #32105e;
+    background: #403B4A;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4e4376, #2b5876);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4e4376, #2b5876); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #000000; /* Apply light text color for input fields */
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.calculate-btn {
+    width: 80%;
+    padding: 10px;
+    margin-left: 35px;
+    border-radius: 8px;
+    border: none;
+    background-color: #007bff;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.calculate-btn:hover {
+    background-color: #0056b3;
+}
+
+.total-profit {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #0d0d0d; /* Background color for total profit section */
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    color: #F9D423 /* Light text color for total profit section */
+}
+
+
+
+
+

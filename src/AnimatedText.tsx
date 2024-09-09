@@ -22,7 +22,7 @@ const AnimatedText = () => {
           WebkitTextFillColor: 'transparent', // Makes the text transparent to reveal the gradient
         }}
       >
-        TAP BIRD APP
+        TRON +
       </Typography>
     </animated.div>
   );

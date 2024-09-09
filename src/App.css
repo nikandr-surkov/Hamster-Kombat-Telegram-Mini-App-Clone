@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Keyframes */
 @keyframes float {
   0% {
@@ -16,50 +15,60 @@
   }
 }
 
-@keyframes float {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-}
-
-.loader {
-  border-top-color: #3498db;
-  animation: spin 1s ease-in-out infinite;
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
+.centered-image {
+  display: block;          /* Ensures the image is treated as a block element */
+  margin: 0 auto;         /* Centers the image horizontally */
+  max-width: 100%;        /* Ensures the image doesn't exceed its container's width */
+  height: auto;           /* Maintains the aspect ratio of the image */
+  width: 50%;             /* Adjust the width as needed (e.g., 50% of its container) */
+  max-height: 400px;      /* Optional: limits the maximum height of the image */
+  object-fit: contain;    /* Ensures the image fits within its container while preserving its aspect ratio */
+}
+
+/* Optional: if you want to center the image vertically as well */
+.centered-container {
+  display: flex;          /* Uses flexbox for centering */
+  justify-content: center; /* Centers the image horizontally */
+  align-items: center;   /* Centers the image vertically */
+  height: 100vh;         /* Adjust the height to match the container or viewport */
+}
+
+.loader {
+  border-top-color: #FF6F00; /* Vibrant Orange */
+  animation: spin 1s ease-in-out infinite;
+}
+
 /* Styling for the floating text */
 .floating-text {
   font-family: 'Roboto', sans-serif;
   font-size: 2rem; /* Adjust font size as needed */
-  color: #f3ba2f; /* Text color */
+  color: #E94E77; /* Bright Pink for text */
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
   letter-spacing: 4px;
   margin-top: 20vh; /* Center vertically */
-  background: linear-gradient(45deg, #ff5151, #fa3dff);
+  background: linear-gradient(45deg, #FF6F00, #E94E77);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: float 3s infinite; /* Adjust timing as needed */
 }
 
 body {
-  font-family: 'Roboto';
+  font-family: 'Roboto', sans-serif;
+  background-color: #0D0D0D; /* Dark Gray Background */
+  color: #FFFFFF; /* White Text Color */
   overflow: hidden;
 }
 
-.box-sizing:{
+/* Box sizing */
+* {
   box-sizing: border-box;
 }
 
@@ -67,7 +76,7 @@ body {
 .dot {
   width: 6px;
   height: 6px;
-  background-color: white;
+  background-color: #FFFFFF; /* White */
   border-radius: 50%;
   position: absolute;
   top: 10px;
@@ -84,7 +93,7 @@ body {
 }
 
 .circle-outer {
-  background: linear-gradient(to bottom, #575def, #202731);
+  background: linear-gradient(to bottom, #1E2A38, #0D0D0D); /* Deep Blue to Dark Gray */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,7 +110,7 @@ body {
 }
 
 .circle-inner {
-  background: radial-gradient(circle, #4960b2, #282e3e);
+  background: radial-gradient(circle, #1E2A38, #0D0D0D); /* Deep Blue to Dark Gray */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,154 +165,28 @@ body {
   font-size: 0.875rem;
 }
 
-.bg-[#1d2025] {
-  background-color: #1d2025;
+.bg-[#1E2A38] {
+  background-color: #1E2A38; /* Deep Blue */
 }
 
-.bg-black {
-  background-color: black;
+.bg-[#0D0D0D] {
+  background-color: #0D0D0D; /* Dark Gray */
 }
 
-.text-gold {
-  background-color: #97a73d;
+.text-[#FFFFFF] {
+  color: #FFFFFF; /* White */
 }
 
-.text-white {
-  color: white;
+.text-[#E94E77] {
+  color: #E94E77; /* Bright Pink */
 }
 
-.font-bold {
-  font-weight: bold;
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.h-screen {
-  height: 100vh;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.max-w-xl {
-  max-width: 36rem;
-}
-
-.rounded-full {
-  border-radius: 50%;
-}
-
-.rounded-lg {
-  border-radius: 0.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.space-x-2 > :not(:last-child) {
-  margin-right: 0.5rem;
-}
-
-.space-x-4 > :not(:last-child) {
-  margin-right: 1rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
-.absolute {
-  position: absolute;
-}
-
-.fixed {
-  z-index: 50;
-}
-
-.bottom-0 {
-  bottom: 0;
-}
-
-.left-1\/2 {
-  left: 50%;
-}
-
-.transform {
-  transform: translateX(-50%);
-}
-
-.z-0 {
-  z-index: 0;
-}
-
-.z-10 {
-  z-index: 10;
-}
-
-.z-50 {
-  z-index: 50;
-}
-
-.relative {
-  overflow: hidden;
-}
-
-.pointer-events-none {
-  pointer-events: none;
-}
-
-.text-5xl {
-  font-size: 3rem;
-}
-
-.animate-fade {
-  animation: fade 1s ease-out forwards;
-}
-
-.bg-[#1d2025] {
-  background-color: #1d2025;
-}
-
-.text-[#d4d4d4] {
-  color: #d4d4d4;
-}
-
-.text-[#95908a] {
-  color: #95908a;
-}
-
-.bg-[#16181c] {
-  background-color: #16181c;
+.bg-[#272a2f] {
+  background-color: #272a2f; /* Slightly lighter background for footer */
 }
 
 .bg-gradient-to-r {
-  background: linear-gradient(to right, #ff5151, #fa3dff);
+  background: linear-gradient(to right, #FF6F00, #E94E77); /* Vibrant Orange to Bright Pink */
 }
 
 /* Header section integrated into the body */
@@ -311,14 +194,31 @@ body {
   font-size: 0.875rem; /* Smaller font size */
   padding: 1rem;
   margin-bottom: 1rem;
-  background: #202731;
+  background: #1E2A38; /* Deep Blue Header */
   border-radius: 0.5rem;
+  color: #FFFFFF; /* White Text */
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+/* Adjustments for layout */
+.header-section .app-name {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.header-section .header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .footer-nav {
   width: calc(100% - 2rem);
   max-width: 36rem;
-  background-color: #272a2f;
+  background-color: #272a2f; /* Slightly lighter background for footer */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -333,9 +233,9 @@ body {
 }
 
 .footer-nav-item {
-  color: #85827d;
+  color: #85827d; /* Light Gray for footer items */
   width: 25%;
-  background-color: #1c1f24;
+  background-color: #1C1F24; /* Deep Blue background for items */
   margin: 0.25rem;
   padding: 0.5rem;
   border-radius: 1rem;
@@ -347,5 +247,28 @@ body {
 }
 
 .footer-nav-item:hover {
-  background-color: #1c1f24;
+  background-color: #1E2A38; /* Deep Blue on hover */
+}
+
+/* Apply padding and margin to main content and buttons */
+.main-content {
+  padding: 1rem;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.button {
+  padding: 12px 24px; /* Top and bottom padding of 12px, left and right padding of 24px */
+  margin: 8px 0; /* Vertical margin of 8px */
+  background-color: #F15A24; /* Tron Accent Color */
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.text-block {
+  padding: 16px; /* Padding around text */
+  margin-bottom: 16px; /* Margin below text blocks */
 }

@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
-import { binanceLogo, dollarCoin, hamsterCoin } from './images';
+import CalculatorIcon from './icons/CalculatorIcon';
+import { binanceLogo, dollarCoin, hamsterCoin, calculatorIcon } from './images'; // Ensure calculatorIcon is imported
 import Info from './icons/Info';
 import Settings from './icons/Settings';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Friends from './components/Friends/Friends';
 import Airdrop from './components/Airdrop/Airdrop';
+import ProfitCalculator from './components/ProfitCalculator'; // Import the ProfitCalculator component
 import { AuthContext } from './context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import AnimatedText from './AnimatedText';
@@ -96,17 +98,21 @@ const Footer: React.FC = () => {
 
   return (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/')}>
+      <div className="text-center text-[#85827d] w-1/5 cursor-pointer" onClick={() => navigate('/')}>
         <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
         <p className="mt-1">Exchange</p>
       </div>
-      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/friends')}>
+      <div className="text-center text-[#85827d] w-1/5 cursor-pointer" onClick={() => navigate('/friends')}>
         <img src={hamsterCoin} alt="Friends" className="w-8 h-8 mx-auto" />
         <p className="mt-1">Friends</p>
       </div>
-      <div className="text-center text-[#85827d] w-1/4 cursor-pointer" onClick={() => navigate('/airdrop')}>
+      <div className="text-center text-[#85827d] w-1/5 cursor-pointer" onClick={() => navigate('/airdrop')}>
         <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
         <p className="mt-1">Airdrop</p>
+      </div>
+      <div className="text-center text-[#85827d] w-1/5 cursor-pointer" onClick={() => navigate('/calculator')}>
+        <img src={calculatorIcon} alt="Calculator" className="w-8 h-8 mx-auto" />
+        <p className="mt-1">Calculator</p>
       </div>
     </div>
   );
@@ -132,6 +138,7 @@ const App: React.FC = () => {
           }
         />
         <Route path="/airdrop" element={<Airdrop />} />
+        <Route path="/calculator" element={<ProfitCalculator />} /> {/* Add route for ProfitCalculator */}
       </Routes>
       <Footer />
     </ErrorBoundary>

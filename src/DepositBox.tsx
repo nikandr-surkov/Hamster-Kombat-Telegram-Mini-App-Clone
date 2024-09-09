@@ -3,12 +3,13 @@ import axios from 'axios';
 import { FiCopy, FiCheckCircle } from 'react-icons/fi';
 import { format } from 'date-fns';
 import { AuthContext } from './context/AuthContext';
+import Richman from './assets/richman.png'; // Adjust the path based on where you placed the GIF
+import './App.css';
 
 interface Transaction {
-  tx_id: string;
-  block_number: number;
+  txid: string;
   amount: number;
-  timestamp: string;
+  created_at: string;
 }
 
 const DepositBox: React.FC = () => {
@@ -40,7 +41,11 @@ const DepositBox: React.FC = () => {
       });
 
       const transactionsData = Array.isArray(transactionsResponse.data)
-        ? transactionsResponse.data
+        ? transactionsResponse.data.map((tx: any) => ({
+            txid: tx.txid,
+            amount: tx.amount,
+            created_at: tx.created_at,
+          }))
         : [];
       setTransactions(transactionsData);
     } catch (err: any) {
@@ -86,17 +91,19 @@ const DepositBox: React.FC = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md flex flex-col items-center space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-800">Deposit TRX</h2>
-      <p className="text-gray-500 text-center">
-        Send TRX to the address below to make a deposit.
-      </p>
-      <div className="bg-gray-100 p-4 rounded-md text-center w-full break-words">
-        <p className="font-mono text-sm text-gray-700">{address || 'Loading address...'}</p>
+    <div className="max-w-md mx-auto p-6 bg-[#0D0D0D] rounded-xl shadow-md flex flex-col items-center space-y-6">
+      <h2 className="text-2xl font-semibold text-[#FFFFFF]">Deposit TRX</h2>
+      {/* Display GIF in the center of the page */}
+      <div className="flex justify-center items-center w-full">
+      <img src={Richman} alt="Deposit Instructions" className="max-w-20 h-18" />
+
+      </div>
+      <div className="bg-[#1E2A38] p-4 rounded-md text-center w-full break-words">
+        <p className="font-mono text-sm text-[#FFFFFF]">{address || 'Loading address...'}</p>
       </div>
       <button
         onClick={handleCopyAddress}
-        className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+        className={`flex items-center ${isAddressCopied ? 'bg-[#FF6F00]' : 'bg-[#1E2A38]'} text-[#FFFFFF] px-4 py-2 rounded-md hover:bg-[#FF6F00] transition duration-200`}
         disabled={!address}
       >
         {isAddressCopied ? (
@@ -111,41 +118,41 @@ const DepositBox: React.FC = () => {
           </>
         )}
       </button>
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-[#E94E77] text-center">
         Your deposit will be automatically detected and reflected in your account.
       </p>
 
       {transactions.length > 0 ? (
         <div className="w-full mt-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-[#FFFFFF] mb-4">
             Deposit History
           </h3>
           <div className="w-full max-h-64 overflow-y-auto">
-            <table className="min-w-full bg-white">
+            <table className="min-w-full bg-[#1E2A38]">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 bg-gray-200 text-left text-sm font-medium text-gray-700">
+                  <th className="py-2 px-4 bg-[#0D0D0D] text-left text-sm font-medium text-[#FFFFFF]">
                     Date
                   </th>
-                  <th className="py-2 px-4 bg-gray-200 text-left text-sm font-medium text-gray-700">
+                  <th className="py-2 px-4 bg-[#0D0D0D] text-left text-sm font-medium text-[#FFFFFF]">
                     Amount (TRX)
                   </th>
-                  <th className="py-2 px-4 bg-gray-200 text-left text-sm font-medium text-gray-700">
+                  <th className="py-2 px-4 bg-[#0D0D0D] text-left text-sm font-medium text-[#FFFFFF]">
                     Transaction ID
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((tx) => (
-                  <tr key={tx.tx_id} className="border-b">
-                    <td className="py-2 px-4 text-sm text-gray-700">
-                      {format(new Date(tx.timestamp), 'dd/MM/yyyy HH:mm')}
+                  <tr key={tx.txid} className="border-b border-[#0D0D0D]">
+                    <td className="py-2 px-4 text-sm text-[#FFFFFF]">
+                      {format(new Date(tx.created_at), 'dd/MM/yyyy HH:mm')}
                     </td>
-                    <td className="py-2 px-4 text-sm text-gray-700">
+                    <td className="py-2 px-4 text-sm text-[#FFFFFF]">
                       {tx.amount}
                     </td>
-                    <td className="py-2 px-4 text-sm text-gray-700">
-                      {tx.tx_id}
+                    <td className="py-2 px-4 text-sm text-[#FFFFFF]">
+                      {tx.txid}
                     </td>
                   </tr>
                 ))}
@@ -154,7 +161,7 @@ const DepositBox: React.FC = () => {
           </div>
         </div>
       ) : (
-        <p className="text-gray-500 text-center mt-6">No deposit history found.</p>
+        <p className="text-[#FFFFFF] text-center mt-6">No deposit history found.</p>
       )}
     </div>
   );
