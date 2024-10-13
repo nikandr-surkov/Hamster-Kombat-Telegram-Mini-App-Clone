@@ -1,42 +1,65 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.progress-gradient {
+  background: linear-gradient(to right, #90ef89, #d692dd, #726edd);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.top-glow {
+  box-shadow: 0 -26px 20px rgba(243, 186, 47, 0.3);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Define the keyframes for the blinking animation */
+@keyframes blink {
+  0% {
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Apply the animation to the dot class */
+.dot {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  animation: blink 1s infinite;
+}
+
+.circle-outer {
+  background: linear-gradient(to bottom, #575def, #202731);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  height: 90vw;
+  max-width: 360px;
+  max-height: 360px;
+}
+
+.circle-inner {
+  background: radial-gradient(circle, #4960b2, #282e3e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
 }
