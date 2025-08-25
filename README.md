@@ -1,4 +1,4 @@
-# Hamster Kombat Clone
+# MTL - Motive to live (was clone from Hamster Kombat)
 
 <div align="center">
   <img src="https://nikandr.com/og-image.jpg" alt="Nikandr - Premium Telegram Development Resources" width="600"/>
