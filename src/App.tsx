@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+https://hamster-kombat-telegram-mini-app-clone-g78u.onrender.com
 import './App.css';
 import Hamster from './icons/Hamster';
 import { binanceLogo, dailyCipher, dailyCombo, dailyReward, dollarCoin, hamsterCoin, mainCharacter } from './images';
